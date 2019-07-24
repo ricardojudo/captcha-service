@@ -1,17 +1,20 @@
-FROM openjdk:8-jre-alpine
+#FROM openjdk:8-jre-alpine
+FROM openjdk:8-jre
 
 ARG user=java
 ARG group=java
 ARG uid=1000
 ARG gid=1000
-ARG home=/usr/src/myapp
+ARG home=/usr/src/app
 ARG app=captcha-service.jar
 
-COPY target/${app} /usr/src/myapp/${app}
-WORKDIR /usr/src/myapp
+RUN	mkdir -p ${home} && \
+	adduser --home ${home} --uid ${uid} --shell /bin/ash ${user} && \
+	chown -R ${user}:${gid} ${home} && \ 
+	chmod g+s ${home}
 
-RUN adduser -h ${home} -u ${uid} -D -s /bin/ash ${user} && \
-	chown -R ${user}:${gid} ${home}
+COPY target/${app} ${home}/${app}
+WORKDIR ${home}
 
 USER ${user}
 CMD ["java","-jar", "captcha-service.jar"] 

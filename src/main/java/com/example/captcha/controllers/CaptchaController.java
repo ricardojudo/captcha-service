@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import com.example.captcha.domain.CaptchaValidation;
 
 @RestController
 @RequestMapping("captchas")
+@CrossOrigin(origins = "*")
 public class CaptchaController {
 
 	private Logger logger = LoggerFactory.getLogger(CaptchaController.class);
@@ -38,24 +40,25 @@ public class CaptchaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> validate(@RequestBody CaptchaValidation validation) {
+	public ResponseEntity<CaptchaResponse> validate(@RequestBody CaptchaValidation validation) {
 		logger.debug("Validation: {}", validation.toString());
-		ResponseEntity<Void> response = null;
+		ResponseEntity<CaptchaResponse> response = null;
 		if (validation.isValid()) {
-			response = new ResponseEntity<Void>(HttpStatus.OK);
+			response = new ResponseEntity<>(new CaptchaResponse("CAPTCHA Valido"),HttpStatus.OK);
 		} else {
-			response = new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+			response = new ResponseEntity<>(new CaptchaResponse("CAPTCHA Invalido"),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		return response;
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<CaptchaException> handle(CaptchaException e){
-		return new ResponseEntity<CaptchaException>(e, HttpStatus.UNPROCESSABLE_ENTITY);
+	public ResponseEntity<CaptchaResponse> handle(CaptchaException e){
+		return new ResponseEntity<CaptchaResponse>(new CaptchaResponse(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<CaptchaGenerationException> handle(CaptchaGenerationException e){
-		return new ResponseEntity<CaptchaGenerationException>(e, HttpStatus.UNPROCESSABLE_ENTITY);
+	public ResponseEntity<CaptchaResponse> handle(Exception e){
+		logger.error(e.getMessage(), e);
+		return new ResponseEntity<CaptchaResponse>(new CaptchaResponse(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }
