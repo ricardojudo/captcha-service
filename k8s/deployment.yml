@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: captcha-service
+  labels:
+    name: captcha-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: captcha-service
+    spec:
+      containers:
+      - name: captcha-service
+        image: 931219806454.dkr.ecr.us-east-1.amazonaws.com/captcha-service:v1.0
+        ports:
+        - name: tomcat
+          containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: captcha-service
+  labels:
+    name: captcha-service
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 8080
+    targetPort: 8080
+  selector:
+    name: captcha-service
