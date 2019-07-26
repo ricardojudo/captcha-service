@@ -98,5 +98,18 @@
 			<url>https://repo.spring.io/milestone</url>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<distributionManagement>
+		<repository>
+			<id>sat-repository</id>
+			<name>SAT Internal Repo - Releases</name>
+			<url>http://mx-sat-avl-nexus.aws-proserve.com/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sat-repository</id>
+			<name>SAT Internal Repo - Snapshots</name>
+			<url>http://mx-sat-avl-nexus.aws-proserve.com/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
