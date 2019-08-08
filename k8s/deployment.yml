@@ -15,7 +15,8 @@ spec:
       - name: captcha-service
         #image: 931219806454.dkr.ecr.us-east-1.amazonaws.com/captcha-service:v1.0
         #image: ricardojudo/captcha-service:v1.0
-        image: docker-registry.okd1.pipeline.avl/avl/captcha-service:v1.0
+        #image: docker-registry.okd1.pipeline.avl/avl/captcha-service:v1.0
+        image: 172.30.1.1:5000/avl/captcha-service:v1.0
         ports:
         - name: tomcat
           containerPort: 8080
