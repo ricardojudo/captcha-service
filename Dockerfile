@@ -1,5 +1,6 @@
 #FROM openjdk:8-jre-alpine
-FROM docker-repo.avl.sat.gob.mx/openjdk:8-jre
+#FROM docker-repo.avl.sat.gob.mx/openjdk:8-jre
+FROM nexus.pipeline.avl:8084/docker-base/openjdk:8-jre-alpine
 
 ARG user=java
 ARG group=java
