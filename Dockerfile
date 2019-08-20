@@ -9,7 +9,7 @@ ARG home=/usr/src/app
 ARG app=captcha-service.jar
 
 RUN	mkdir -p ${home} && \
-	adduser --home ${home} --uid ${uid} --shell /bin/ash ${user} && \
+	adduser --system --home ${home} --uid ${uid} --shell /bin/ash ${user} && \
 	chown -R ${user}:${gid} ${home} && \ 
 	chmod g+s ${home}
 
