@@ -1,0 +1,4 @@
+
+
+
+jmeter.sh -n -t src/jmeter/get-captcha.jmx -l jmeter.jtl  -p src/jmeter/get-captcha-10000u.properties 
